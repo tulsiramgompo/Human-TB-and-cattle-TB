@@ -1,0 +1,53 @@
+
+
+Cattle_tb$herd_size<-as.factor(cattle_tb$herd_size)
+table(cattle_tb$tuberculin_classification)
+@@ -24,3 +292,59 @@ prop.table(table(cattle_tb$husbandry_practice,cattle_tb$tuberculin_classificatio
+prop.table(table(cattle_tb$breed,cattle_tb$tuberculin_classification))*100
+prop.table(table(cattle_tb$coughing_history,cattle_tb$tuberculin_classification))*100
+ prop.table(table(cattle_tb$animal_origin,cattle_tb$tuberculin_classification))*100
+ 
+ ## For cattle data
+## Tuberculine test (pos=12 and total test=123)
+prop.test(12,123)
+## Rapid test
+prop.test(46,123)
+#ELISA
+prop.test(7,123)
+## Correlation Matrix
+library(GGally)
+library(ggplot2)
+## collnearity
+cor(cattle_tb $ age_cat, cattle_tb $ herd_size, method = "pearson")
+## Correlation for each variables
+# Age category
+ x_rapid_test<- c(8,21,17)
+ y_ELISA<-c(1,2,4)
+cor(x,y)
+cor.test(x,y, method = "pearson")
+## Herd Size
+x_herd<- c(18,16,4)
+y_herd<-c(1,2,4)
+cor(x_herd,y_herd)
+cor.test(x_herd,y_herd, method = "pearson")
+#3 Body condition
+x_body<- c(9,24,13)
+y_body<- c(2,3,2)
+cor.test(x_body,y_body, method = "pearson")
+# Husbandary practise
+x_hus<- c(38,8)
+y_hus<- c(6,1)
+cor(x_hus, y_hus)
+cor.test(x_hus, y_hus, method = "spearman")
+# breed
+x_breed<-c(9,29,8)
+y_breed<-c(6,1,7)
+cor.test(x_breed, y_breed, method = "pearson")
+# cough
+x_cough<- c(17 ,29)
+y_cough<- c (5, 2)
+cor.test(x_cough, y_cough, method = "pearson")
+## Animal Origin
+x_origin<-c(36,10)
+y_origin<-c(1,6)
+cor.test(x_origin, y_origin, method = "pearson")
