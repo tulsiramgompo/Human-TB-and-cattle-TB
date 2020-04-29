@@ -1,7 +1,275 @@
 # Human-TB-and-cattle-TB
 This projects deals with the interaction of cattle and human beings which is associated to development of zoonotic TB in people.
 
-## Codes for calculating tuberculin tests
+# For Human TB risk factors Analysis codes
+ 
+ human_tb<-read_csv("/Users/Tulsigompo/Documents/Bovine_Tb_1/Data_TB/tb_data_ktm_and_kavre_only.csv")
+head(human_tb)
+str(human_tb)
+# Descriptive anslysis
+
+table(human_tb$age_cat,human_tb$tb_disease_status)
+table(human_tb$sex)
+table(human_tb$sex,human_tb$tb_disease_status)
+
+table(human_tb$education_level,human_tb$tb_disease_status)
+table(human_tb$ocupation_codes,human_tb$tb_disease_status)
+table(human_tb$ethnicity,human_tb$tb_disease_status)
+table(human_tb$residence_type,human_tb$tb_disease_status)
+table(human_tb$bcg_vaccination_status,human_tb$tb_disease_status)
+table(human_tb$family_type,human_tb$tb_disease_status)
+table(human_tb$family_size,human_tb$tb_disease_status)
+table(human_tb$smoking_habit,human_tb$tb_disease_status)
+table(human_tb$drinking_habit,human_tb$tb_disease_status)
+table(human_tb$previous_tb_history,human_tb$tb_disease_status)
+table(human_tb$cattle_exposure,human_tb$tb_disease_status)
+table(human_tb$district_name,human_tb$tb_disease_status)
+
+
+# univariable analysis
+library(car)
+library(MASS)
+# AGe category
+human_tb$tb_disease_status<-as.factor(human_tb$tb_disease_status)
+human_tb$age_cat<-as.factor(human_tb$age_cat)
+Uni_1<-glm(tb_disease_status~ age_cat,data= human_tb,family = binomial(link = "logit"))
+anova(Uni_1)
+Anova(Uni_1,type = 3)
+summary(Uni_1)
+#Calculating the confidence interval for coefficeint
+confint(Uni_1)
+## calculating odds ratio
+exp(coef(Uni_1))
+#Calculating the confidence interval for odd ratios
+exp(confint(Uni_1))
+# SEX
+human_tb$sex<-as.factor(human_tb$sex)
+Uni_2<-glm(tb_disease_status~ sex,data= human_tb,family = binomial(link = "logit"))
+summary(Uni_2)
+exp(coef(Uni_2))
+exp(confint(Uni_2))
+
+# Education level
+human_tb$education_level<-as.factor(human_tb$education_level)
+Uni_3<-glm(tb_disease_status~education_level,data= human_tb,family = binomial(link = "logit"))
+summary(Uni_3)
+exp(coef(Uni_3))
+exp(confint(Uni_3))
+# occupation
+human_tb$ocupation_codes<-as.factor(human_tb$ocupation_codes)
+Uni_4<-glm(tb_disease_status~ocupation_codes,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_4)
+Anova(Uni_4,type=3)
+exp(coef(Uni_4))
+
+## Ethnicity
+human_tb$ethnicity_codes<-as.factor(human_tb$ethnicity_codes)
+Uni_5<-glm(tb_disease_status~ethnicity_codes,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_5)
+Anova(Uni_5,type=3)
+exp(coef(Uni_5))
+
+## Re-odering the levels of the variable
+human_tb$residence_type<-as.factor(human_tb$residence_type)
+human_tb$residence_type<-factor(human_tb$residence_type,levels(human_tb $residence_type)[c(2,1)])
+## Residence
+human_tb$residence_type<-as.factor(human_tb$residence_type)
+Uni_6<-glm(tb_disease_status~residence_type,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_6)
+Anova(Uni_6,type=3)
+exp(coef(Uni_6))
+exp(confint(Uni_6))
+
+# BCG vaccines
+
+human_tb$bcg_vaccination_status<-as.factor(human_tb$bcg_vaccination_status)
+human_tb$bcg_vaccination_statuse<-factor(human_tb$bcg_vaccination_status,levels(human_tb $bcg_vaccination_status)[c(1,2)])
+Uni_7<-glm(tb_disease_status~bcg_vaccination_status,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_7)
+Anova(Uni_7,type=3)
+exp(coef(Uni_7))
+## Family type
+human_tb$family_type<-as.factor(human_tb$family_type)
+Uni_8<-glm (tb_disease_status~family_type,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_8)
+Anova(Uni_8,type=3)
+exp(coef(Uni_8))
+## family size
+human_tb$family_size<-as.factor(human_tb$family_size)
+Uni_9<-glm (tb_disease_status~family_size,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_9)
+Anova(Uni_9,type=3)
+exp(coef(Uni_9))
+
+#Smoking history
+human_tb$smoking_habit<-as.factor(human_tb$smoking_habit)
+Uni_10<-glm (tb_disease_status~smoking_habit,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_10)
+Anova(Uni_10,type=3)
+exp(coef(Uni_10))
+
+
+# TB history
+human_tb$previous_tb_history<-as.factor(human_tb$previous_tb_history)
+Uni_11<-glm (tb_disease_status~previous_tb_history,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_11)
+Anova(Uni_11,type=3)
+exp(coef(Uni_11))
+
+## Cattle exposure
+human_tb$cattle_exposure<-as.factor(human_tb$cattle_exposure)
+Uni_12<-glm (tb_disease_status~cattle_exposure,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_12)
+Anova(Uni_12,type=3)
+exp(coef(Uni_12))
+
+# Risk districts
+human_tb$district_name<-as.factor(human_tb$district_name)
+Uni_13<-glm (tb_disease_status~district_name,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_13)
+Anova(Uni_13,type=3)
+exp(coef(Uni_13))
+exp(confint(Uni_13))
+## Drinking habit
+human_tb$drinking_habit<-as.factor(human_tb$drinking_habit)
+Uni_14<-glm (tb_disease_status~drinking_habit,data= human_tb,family = binomial(link = "logit")) 
+summary(Uni_14)
+Anova(Uni_14,type=3)
+exp(coef(Uni_14))
+human_tb$tb_disease_status<-as.factor(human_tb$tb_disease_status)
+
+##Model Selection by backward elemination
+library(car)
+FullModel<-glm (tb_disease_status ~ age_cat+ sex + education_level + ocupation_codes+ ethnicity_codes+ residence_type + bcg_vaccination_status+ family_type+ family_size+smoking_habit+ drinking_habit+previous_tb_history+cattle_exposure,data= human_tb,family = binomial(link="logit"))
+summary(FullModel)
+Model1<-step(FullModel,direction="backward")
+exp(coef(Model1))
+summary(Model1)
+Anova(Model1,type=3)
+
+## AIC methods
+## MuMin approach (Best subset selection using the dredge function
+options(na.action = "na.fail")
+library(MuMIn)
+AllSubsets<-dredge(FullModel,rank="AIC")
+head(AllSubsets)
+ ## Running final Model    
+Model_2<-glm(tb_disease_status ~ age_cat + sex + ocupation_codes + smoking_habit+ previous_tb_history + cattle_exposure, data = human_tb,na.action=na.exclude,family = binomial(link = logit))
+summary(Model_2)
+exp(coef(Model_2))
+
+## Alternatively
+##Cut off p=0.20 methods
+human_tb$residence_type<-factor(human_tb$ocupation_codes,levels(human_tb$ocupation_codes)[c(3,2,0,1)])
+Model_first<-glm (tb_disease_status ~ education_level + ocupation_codes + family_size+ ethnicity_codes + smoking_habit+drinking_habit+previous_tb_history+cattle_exposure+ district_name, data = human_tb,na.action=na.exclude,family = binomial(link="logit"))
+summary(Model_first)
+anova(Model_first)
+Anova(Model_first,type = 3)
+exp(coef(Model_first))
+exp(confint(Model_first))
+# # Checking for the multicollinearity
+par(mfrow=c(2,2))
+plot(Model_first)
+vif(Model_first)
+
+## By seeing the VIF (Model_first) we found variables such as  education_level and ocupation_codes have vif values more than 10. So, they are creating collinearity.
+## For this those variables one variables with biggest  F- statistic (VIF) related is removed and reran the model as below.
+Model_second<-glm (tb_disease_status ~ education_level +family_size+ ethnicity_codes + smoking_habit+drinking_habit+previous_tb_history+cattle_exposure+ district_name, data = human_tb,na.action=na.exclude,family = binomial(link="logit"))
+summary(Model_second)
+exp(coef(Model_second))
+exp(confint(Model_second))
+Anova(Model_second,type = 3)
+vif(Model_second) ## the values are less than 10.
+
+## Examine FIt by MacFadden's pseudo R2'
+
+NullModel<-glm(tb_disease_status~1,family = binomial(link="logit"),data= human_tb)
+ 
+ ## Pseudo R2
+1-logLik(Model_first)/logLik(NullModel) 
+
+
+
+# Model Tests and interpretation
+# H-L Lack of fit  Test
+hoslem.test(Model1$y,fitted(Model1),g=10)
+
+# We cam go for the post hoc test by lsmeans to see which category is different
+
+library(lsmeans)
+lsmeans(Model_first,pairwise~ocupation_codes)
+
+
+
+## Test Agreement kappa statistics for INTER-RATER RELIABILITY MEASURES IN R
+
+## Ref: https://www.datanovia.com/en/lessons/cohens-kappa-in-r-for-two-categorical-variables/
+
+# Contingency table for test agreement between the rapid test and ELISA category
+
+### Contengency table for rapid test and ELISA test of agrement
+xtab1 <- as.table(rbind (c(7,39), c(0,77)))
+# Descriptive statistics
+diagonal.counts <- diag(xtab1)
+N <- sum(xtab1)
+row.marginal.props <- rowSums(xtab1)/N
+col.marginal.props <- colSums(xtab1)/N
+# Compute kappa (k)
+Po <- sum(diagonal.counts)/N
+Pe <- sum(row.marginal.props*col.marginal.props)
+k1 <- (Po - Pe)/(1 - Pe)
+k1
+
+#Contengency table for rapid test and tuberculin test of agrement
+
+xtab2 <- as.table(rbind (c(12,0),c(34,77)))
+# Descriptive statistics
+diagonal.counts <- diag(xtab2)
+N <- sum(xtab2)
+row.marginal.props <- rowSums(xtab2)/N
+col.marginal.props <- colSums(xtab2)/N
+# Compute kappa (k)
+Po <- sum(diagonal.counts)/N
+Pe <- sum(row.marginal.props*col.marginal.props)
+k2 <- (Po - Pe)/(1 - Pe)
+k2
+
+## Contengency table for tuberculin and ELISA test of agrement
+xtab3 <- as.table(rbind (c(7,5),c(0,111)))
+# Descriptive statistics
+diagonal.counts <- diag(xtab)
+N <- sum(xtab)
+row.marginal.props <- rowSums(xtab3)/N
+col.marginal.props <- colSums(xtab3)/N
+
+# Compute kappa (k)
+Po <- sum(diagonal.counts)/N
+Pe <- sum(row.marginal.props*col.marginal.props)
+k3 <- (Po - Pe)/(1 - Pe)
+k3
+## Weighted kappa and hypothesis testing
+## Statistical hypotheses
+##Null hypothesis(H0): kappa = 0. The agreement is the same as chance agreement.
+ ## Alternative hypothesis(Ha): kappa ≠ 0. The agreement is different from chance agreement
+
+library("vcd")
+library("grid")
+# Compute weighted, p value for k1 and Confidence interval
+res.k1 <- Kappa(xtab1)
+res.k1
+confint(res.k1)
+# Compute weighted and p value for k2 and Confidence interval
+res.k2 <- Kappa(xtab2)
+res.k2
+confint(res.k2)
+# Compute weighted and p value for k3 and Confidence interval
+res.k3 <- Kappa(xtab3)
+res.k3
+confint(res.k3)
+prop.test(k)
+
+
+## Codes for calculating cattle tuberculin tests
 
 cattle_tb$herd_size<-as.factor(cattle_tb$herd_size)
 table(cattle_tb$tuberculin_classification)
@@ -24,3 +292,59 @@ prop.table(table(cattle_tb$husbandry_practice,cattle_tb$tuberculin_classificatio
 prop.table(table(cattle_tb$breed,cattle_tb$tuberculin_classification))*100
 prop.table(table(cattle_tb$coughing_history,cattle_tb$tuberculin_classification))*100
  prop.table(table(cattle_tb$animal_origin,cattle_tb$tuberculin_classification))*100
+ 
+ ## For cattle data
+## Tuberculine test (pos=12 and total test=123)
+prop.test(12,123)
+## Rapid test
+prop.test(46,123)
+#ELISA
+prop.test(7,123)
+
+
+## Correlation Matrix
+library(GGally)
+library(ggplot2)
+
+## collnearity
+cor(cattle_tb $ age_cat, cattle_tb $ herd_size, method = "pearson")
+
+
+## Correlation for each variables
+# Age category
+ x_rapid_test<- c(8,21,17)
+ y_ELISA<-c(1,2,4)
+cor(x,y)
+cor.test(x,y, method = "pearson")
+
+## Herd Size
+x_herd<- c(18,16,4)
+y_herd<-c(1,2,4)
+cor(x_herd,y_herd)
+cor.test(x_herd,y_herd, method = "pearson")
+
+#3 Body condition
+x_body<- c(9,24,13)
+y_body<- c(2,3,2)
+cor.test(x_body,y_body, method = "pearson")
+# Husbandary practise
+x_hus<- c(38,8)
+y_hus<- c(6,1)
+cor(x_hus, y_hus)
+cor.test(x_hus, y_hus, method = "spearman")
+
+# breed
+x_breed<-c(9,29,8)
+y_breed<-c(6,1,7)
+cor.test(x_breed, y_breed, method = "pearson")
+
+# cough
+x_cough<- c(17 ,29)
+y_cough<- c (5, 2)
+cor.test(x_cough, y_cough, method = "pearson")
+
+## Animal Origin
+x_origin<-c(36,10)
+y_origin<-c(1,6)
+cor.test(x_origin, y_origin, method = "pearson")
+
